@@ -1,99 +1,21 @@
-# Ignore all subfolder content, but allow exceptions
-*/
+# Ignorar todo en la raíz del proyecto
+*
 
-
-
-
-# Exceptions: Properties folders of the main projects
+# Excepciones: Carpetas principales y sus carpetas Properties
+!My_Pokedex/
 !My_Pokedex/Properties/
+!Domain/
 !Domain/Properties/
+!DataAccess/
 !DataAccess/Properties/
+!Business/
 !Business/Properties/
 
-# Exceptions: Main project folders
-!My_Pokedex/
-!Domain/
-!DataAccess/
-!Business/
+# Ignorar archivos específicos en la raíz del proyecto (si los tienes)
+# !archivo_que_quieres_mantener.txt
+# !carpeta_que_quieres_mantener/
 
-# Exceptions: Files within the main project folders
-My_Pokedex/*
-!My_Pokedex/Properties/*
-Domain/*
-!Domain/Properties/*
-DataAccess/*
-!DataAccess/Properties/*
-Business/*
-!Business/Properties/*
-
-
-
-
-
-# Ignore specific files inside My_Pokedex (Visual Studio user settings)
-My_Pokedex/*.suo
-My_Pokedex/*.user
-
-# Ignore build folders inside projects
-My_Pokedex/bin/
-My_Pokedex/obj/
-Domain/bin/
-Domain/obj/
-DataAccess/bin/
-DataAccess/obj/
-Business/bin/
-Business/obj/
-
-# Ignore build and output files (executables, libraries, debug symbols)
-bin/
-obj/
-*.exe
-*.dll
-*.pdb
-
-# Ignore NuGet packages folder (if it exists)
-packages/
-
-# Ignore Visual Studio settings
-*.vs/
-*.vssscc
-*.vstemplate
-*.vstemplate.data
-*.vspscc
-
-# Ignore temporary and log files
-*.tmp
-*.log
-
-# Ignore NuGet cache
-*.nuget/
-
-# Ignore publish files
-Publish/
-
-# Ignore ReSharper files (if you have them)
-.ReSharper*/
-
-# Ignore Visual Studio Code files (if you have them)
-.vscode/
-
-# Ignore JetBrains Rider files (if you have them)
-.idea/
-
-# Ignore local database files (if you have them)
-*.mdf
-*.ldf
-
-# Ignore configuration files and sensitive data
-*.config
-*.json
-*.secrets
-
-# Ignore OS-specific files
-Thumbs.db
-.DS_Store
-
-
+# Ignorar archivos específicos
 Sheet-html-1f72409c-ffd7-4865-8323-3216e9b1c509.webp
 input.pdf
 pagina.html
@@ -102,3 +24,40 @@ practicaMaxiPrograma.html
 practicaMaxiPrograma.js
 sheet-html_e27f26e2-8669-437b-84dd-912932693263.pdf
 tabladeetiquetas.pdf
+
+# Ignorar archivos de Visual Studio
+My_Pokedex/*.suo
+My_Pokedex/*.user
+My_Pokedex/bin/
+My_Pokedex/obj/
+Domain/bin/
+Domain/obj/
+DataAccess/bin/
+DataAccess/obj/
+Business/bin/
+Business/obj/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+packages/
+*.vs/
+*.vssscc
+*.vstemplate
+*.vstemplate.data
+*.vspscc
+*.tmp
+*.log
+*.nuget/
+Publish/
+.ReSharper*/
+.vscode/
+.idea/
+*.mdf
+*.ldf
+*.config
+*.json
+*.secrets
+Thumbs.db
+.DS_Store
