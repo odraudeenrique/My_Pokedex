@@ -66,7 +66,7 @@ namespace My_Pokedex
 
                 HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(Url);
                 Request.Method = "HEAD";
-                Request.Timeout = 5000;
+                Request.Timeout = 10000;
 
                 using (var Response = (HttpWebResponse)Request.GetResponse())
                 {

@@ -6,7 +6,7 @@
 
     <main class="row">
         <div class="col"></div>
-
+        
         <div class="col-8">
             <section class="navbar d-flex justify-content-center" role="search">
                 
