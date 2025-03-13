@@ -1,85 +1,3 @@
-# # Ignorar todo en la raíz del proyecto
-# *
-
-
-# # Permitir todos los directorios
-# !*/
-
-# # Permitir solo los archivos dentro de los proyectos que te interesan
-# !ProductDetailScreen/
-# !ProductDetailScreen/**
-# !Domain/
-# !Domain/**
-# !DataAccess/
-# !DataAccess/**
-# !Business/
-# !Business/Properties/
-# !Business/**
-
-
-
-# # Excepciones: Carpetas principales y sus carpetas Properties
-# !My_Pokedex/
-# !My_Pokedex/Properties/
-# !Domain/
-# !Domain/Properties/
-# !DataAccess/
-# !DataAccess/Properties/
-# !Business/
-# !Business/Properties/
-
-
-# # Ignorar archivos específicos
-# Sheet-html-1f72409c-ffd7-4865-8323-3216e9b1c509.webp
-# input.pdf
-# pagina.html
-# piedrapapelotijera.html
-# practicaMaxiPrograma.html
-# practicaMaxiPrograma.js
-# sheet-html_e27f26e2-8669-437b-84dd-912932693263.pdf
-# tabladeetiquetas.pdf
-
-# # Ignorar archivos de Visual Studio
-# My_Pokedex/*.suo
-# My_Pokedex/*.user
-# My_Pokedex/bin/
-# My_Pokedex/obj/
-# Domain/bin/
-# Domain/obj/
-# DataAccess/bin/
-# DataAccess/obj/
-# Business/bin/
-# Business/obj/
-# bin/
-# obj/
-# *.exe
-# *.dll
-# *.pdb
-# packages/
-# *.vs/
-# *.vssscc
-# *.vstemplate
-# *.vstemplate.data
-# *.vspscc
-# *.tmp
-# *.log
-# *.nuget/
-# Publish/
-# .ReSharper*/
-# .vscode/
-# .idea/
-# *.mdf
-# *.ldf
-# *.config
-# *.json
-# *.secrets
-# Thumbs.db
-# .DS_Store
-
-
-
-# Ignorar todo por defecto dentro de la carpeta actual
-# (esto impide que se suban archivos/carpeta no listados más abajo)
 *
 
 */*
@@ -129,12 +47,6 @@ Publish/
 *.secrets
 Thumbs.db
 .DS_Store
-
-
-
-
-
-
 
 
 # Ignorar carpetas de salida
