@@ -1,0 +1,4 @@
+CREATE PROCEDURE StoredToDelete 
+@Id int 
+as
+DELETE FROM POKEMONS WHERE Id=@Id

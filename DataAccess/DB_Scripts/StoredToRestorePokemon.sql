@@ -1,0 +1,4 @@
+CREATE PROCEDURE StoredToRestorePokemon
+@Id INT
+AS
+UPDATE POKEMONS SET Active=1 WHERE Id=@Id

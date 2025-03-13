@@ -1,0 +1,4 @@
+CREATE PROCEDURE StoredToLogicalDelete
+@Id INT
+AS
+UPDATE POKEMONS SET Active=0 WHERE Id=@Id
