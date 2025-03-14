@@ -9,9 +9,14 @@
         
         <div class="col-8">
             <section class="navbar d-flex justify-content-center" role="search">
-                
-                <h4 class="nav-item"> Write a name or the number of the pokemon, please</h4>
-                <asp:TextBox runat="server" ID="TxtSearchWithoutDB" OnTextChanged="TxtSearchWithoutDB_TextChanged" CssClass="form-control flex-grow-1 me-2" AutoPostBack="true" />
+                <asp:DropDownList runat="server" ID="TypeOfSearch" OnSelectedIndexChanged="TypeOfSearch_SelectedIndexChanged" AutoPostBack="true" CssClass="dropdown btn btn-light me-2">
+                    <asp:ListItem Text="Name or Number"  />
+                    <asp:ListItem Text="Type of Pokemon" />
+                    <asp:ListItem Text="Pokemon's Weakness" />
+                </asp:DropDownList>
+                <div class="navbar d-flex justify-content-start">   
+                    <asp:TextBox runat="server" ID="TxtSearchWithoutDB" OnTextChanged="TxtSearchWithoutDB_TextChanged" CssClass="form-control flex-grow-1 me-2" AutoPostBack="true" />
+                </div>
             </section>
             <section class="row row-cols-1 row-cols-md-3 g-4">
 

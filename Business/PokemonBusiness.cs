@@ -454,105 +454,105 @@ namespace Business
             }
         }
 
-        //public List<Pokemon> ToFilter(string field, string criteria, string filter)
-        //{
-        //    //Tengo que ver cómo hago esto por procedimiento almacenado 
-        //    List<Pokemon> pokemons = new List<Pokemon>();
-        //    try
-        //    {
-        //        string query = "select P.Id, P.Numero,P.Nombre,P.Descripcion,P.IdTipo,P.IdDebilidad,T.Id,T.Descripcion as Elemento,W.ID,W.Descripcion as Debilidad,p.UrlImagen,P.Activo from POKEMONS as P, ELEMENTOS as T,ELEMENTOS as W where P.IdTipo=T.Id and P.IdDebilidad=W.Id and Activo=1 and ";
-        //        if (field == "Number")
-        //        {
-        //            switch (criteria)
-        //            {
-        //                //aux = "P.Numero > ";
-        //                case "Mayor than":
-        //                    query += "P.Numero > " + filter;
-        //                    break;
-        //                case "Minor than":
-        //                    query += "P.Numero < " + filter;
-        //                    break;
-        //                case "Equal to":
-        //                    query += "P.Numero = " + filter;
-        //                    break;
-        //            }
-        //        }
-        //        else if (field == "Name")
-        //        {
-        //            switch (criteria)
-        //            {
-        //                case "Stars with":
-        //                    query += $"P.Nombre like '{filter}%' ";
-        //                    break;
-        //                case "Ends with":
-        //                    query += $"P.Nombre like '%{filter}' ";
-        //                    break;
-        //                case "Contains":
-        //                    query += $"P.Nombre like '%{filter}%' ";
-        //                    break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            switch (criteria)
-        //            {
-        //                case "Stars with":
-        //                    query += $"P.Descripcion like '{filter}%' ";
-        //                    break;
-        //                case "Ends with":
-        //                    query += $"P.Descripcion like '%{filter}' ";
-        //                    break;
-        //                case "Contains":
-        //                    query += $"P.Descripcion like '%{filter}%' ";
-        //                    break;
-        //            }
-        //        }
+        public List<Pokemon> ToFilter(string field, string criteria, string filter)
+        {
+            //Tengo que ver cómo hago esto por procedimiento almacenado 
+            List<Pokemon> pokemons = new List<Pokemon>();
+            try
+            {
+                string query = "select P.Id, P.Numero,P.Nombre,P.Descripcion,P.IdTipo,P.IdDebilidad,T.Id,T.Descripcion as Elemento,W.ID,W.Descripcion as Debilidad,p.UrlImagen,P.Activo from POKEMONS as P, ELEMENTOS as T,ELEMENTOS as W where P.IdTipo=T.Id and P.IdDebilidad=W.Id and Activo=1 and ";
+                if (field == "Number")
+                {
+                    switch (criteria)
+                    {
+                        //aux = "P.Numero > ";
+                        case "Mayor than":
+                            query += "P.Numero > " + filter;
+                            break;
+                        case "Minor than":
+                            query += "P.Numero < " + filter;
+                            break;
+                        case "Equal to":
+                            query += "P.Numero = " + filter;
+                            break;
+                    }
+                }
+                else if (field == "Name")
+                {
+                    switch (criteria)
+                    {
+                        case "Stars with":
+                            query += $"P.Nombre like '{filter}%' ";
+                            break;
+                        case "Ends with":
+                            query += $"P.Nombre like '%{filter}' ";
+                            break;
+                        case "Contains":
+                            query += $"P.Nombre like '%{filter}%' ";
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (criteria)
+                    {
+                        case "Stars with":
+                            query += $"P.Descripcion like '{filter}%' ";
+                            break;
+                        case "Ends with":
+                            query += $"P.Descripcion like '%{filter}' ";
+                            break;
+                        case "Contains":
+                            query += $"P.Descripcion like '%{filter}%' ";
+                            break;
+                    }
+                }
 
-        //        Data.SetQuery(query);
-        //        Data.OpenConnection();
+                Data.SetQuery(query);
+                Data.OpenConnection();
 
-        //        Data.ReadData();
-        //        while (Data.Reader.Read())
-        //        {
-        //            Pokemon aux = new Pokemon();
-        //            aux.Id = (int)Data.Reader["Id"];
-        //            aux.Number = (int)Data.Reader["Numero"];
-        //            aux.Name = (string)Data.Reader["Nombre"];
-        //            aux.Description = (string)Data.Reader["Descripcion"];
+                Data.ReadData();
+                while (Data.Reader.Read())
+                {
+                    Pokemon aux = new Pokemon();
+                    aux.Id = (int)Data.Reader["Id"];
+                    aux.Number = (int)Data.Reader["Numero"];
+                    aux.Name = (string)Data.Reader["Nombre"];
+                    aux.Description = (string)Data.Reader["Descripcion"];
 
-        //            //aux.Type = new Element();
-        //            //aux.Weakness = new Element();
-        //            aux.Type.Id = (int)Data.Reader["IdTipo"];
-        //            aux.Type.Description = (string)Data.Reader["Elemento"];
+                    //aux.Type = new Element();
+                    //aux.Weakness = new Element();
+                    aux.Type.Id = (int)Data.Reader["IdTipo"];
+                    aux.Type.Description = (string)Data.Reader["Elemento"];
 
-        //            aux.Weakness.Id = (int)Data.Reader["IdDebilidad"];
-        //            aux.Weakness.Description = (string)Data.Reader["Debilidad"];
-
-
-        //            if (!(Data.Reader["UrlImagen"] is DBNull))
-        //            {
-        //                aux.Url = (string)Data.Reader["UrlImagen"];
-        //            }
-
-        //            aux.Active = (bool)Data.Reader["Activo"];
-
-        //            pokemons.Add(aux);
-        //        }
-
-        //        return pokemons;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    finally
-        //    {
-        //        Data.CloseConnection();
-        //    }
+                    aux.Weakness.Id = (int)Data.Reader["IdDebilidad"];
+                    aux.Weakness.Description = (string)Data.Reader["Debilidad"];
 
 
+                    if (!(Data.Reader["UrlImagen"] is DBNull))
+                    {
+                        aux.Url = (string)Data.Reader["UrlImagen"];
+                    }
 
-        //}
+                    aux.Active = (bool)Data.Reader["Activo"];
+
+                    pokemons.Add(aux);
+                }
+
+                return pokemons;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Data.CloseConnection();
+            }
+
+
+
+        }
 
 
 

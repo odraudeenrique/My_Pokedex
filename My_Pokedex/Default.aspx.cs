@@ -109,7 +109,7 @@ namespace My_Pokedex
         }
 
 
-
+        
         protected void BtnViewDetails_Click(object sender, EventArgs e)
         {
             string PokemonId = ((Button)sender).CommandArgument != null ? ((Button)sender).CommandArgument : "";
@@ -120,17 +120,87 @@ namespace My_Pokedex
             }
 
         }
+        private List<Pokemon> ToFilterByTypeOrWeakness()
+        {
+            
+            string FieldToSearch = !string.IsNullOrEmpty(TxtSearchWithoutDB?.Text) ? TxtSearchWithoutDB.Text.Trim() : "";
+            string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
 
-        protected void TxtSearchWithoutDB_TextChanged(object sender, EventArgs e)
+            if (!string.IsNullOrEmpty(SelectedValue) && (Session["AllPokemons"] != null))
+            {
+
+                if ((!int.TryParse(FieldToSearch, out int Error)) && (string.IsNullOrEmpty(FieldToSearch))  )
+                {
+                    List<Pokemon> FilteredPokemons= ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.ToLower() == SelectedValue.ToLower()).ToList();    
+                    if((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                    {
+                        return FilteredPokemons;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                    
+                }else if ((!int.TryParse(FieldToSearch, out int Error2)) && (!string.IsNullOrEmpty(FieldToSearch)))
+                {
+                    List<Pokemon> FilteredPokemons;
+                    switch (SelectedValue)
+                    {
+                        case "type of pokemon":
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.Contains(FieldToSearch.ToLower())).ToList();
+                            if((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                            {
+                                return FilteredPokemons;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        case "Pokemon's Weakness":
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Weakness.Description.Contains(FieldToSearch.ToLower())).ToList();
+                            if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                            {
+                                return FilteredPokemons;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        default:
+                            return null;    
+                    }
+                    
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            else
+            {
+                return null;
+            }
+
+       
+
+
+
+        }
+        private void ToFilter()
+        {
+            string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
+        }
+        private void ToFilterByName()
         {
             string FieldToSearch = !string.IsNullOrEmpty(TxtSearchWithoutDB.Text) ? TxtSearchWithoutDB.Text.Trim() : "";
 
 
             int PokemonNumber;
 
-            if ((int.TryParse(FieldToSearch, out PokemonNumber)) && (!string.IsNullOrEmpty(FieldToSearch))   && (Session["AllPokemons"]!=null)  )
+            if ((int.TryParse(FieldToSearch, out PokemonNumber)) && (!string.IsNullOrEmpty(FieldToSearch)) && (Session["AllPokemons"] != null))
             {
-                if(PokemonNumber > 0)
+                if (PokemonNumber > 0)
                 {
                     foreach (Pokemon Poke in ((List<Pokemon>)Session["AllPokemons"]))
                     {
@@ -147,6 +217,7 @@ namespace My_Pokedex
                             }
                             else
                             {
+                                RepPokemonCards.GetDefaultValues();
                                 RepPokemonCards.DataSource = Session["AllPokemons"];
                                 RepPokemonCards.DataBind();
                             }
@@ -154,15 +225,21 @@ namespace My_Pokedex
                     }
 
                 }
+                else
+                {
+                    RepPokemonCards.GetDefaultValues();
+                    RepPokemonCards.DataSource = null;
+                    RepPokemonCards.DataBind();
+                }
             }
             else if ((!string.IsNullOrEmpty(FieldToSearch)))
             {
-                List<Pokemon> FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P=> DoesThePokemonContainsTheString(P,FieldToSearch)).ToList();
+                List<Pokemon> FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => DoesThePokemonContainsTheString(P, FieldToSearch)).ToList();
 
-                if(FilteredPokemons != null)
+                if (FilteredPokemons != null)
                 {
                     RepPokemonCards.GetDefaultValues();
-                    RepPokemonCards.DataSource= FilteredPokemons;
+                    RepPokemonCards.DataSource = FilteredPokemons;
                     RepPokemonCards.DataBind();
                 }
                 else
@@ -179,6 +256,11 @@ namespace My_Pokedex
                 RepPokemonCards.DataSource = Session["AllPokemons"];
                 RepPokemonCards.DataBind();
             }
+        }
+
+        protected void TxtSearchWithoutDB_TextChanged(object sender, EventArgs e)
+        {
+            //ToFilterPokemon();
         }
 
         private bool DoesThePokemonContainsTheString(Pokemon Poke, string Field)
@@ -202,11 +284,25 @@ namespace My_Pokedex
             
             
             return false ;
-        } 
+        }
 
-        
+        protected void TypeOfSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if((TypeOfSearch!=null) && (!string.IsNullOrEmpty(TypeOfSearch.SelectedValue)))
+            {
+                string SelectedValue= TypeOfSearch.SelectedValue.ToLower();
+                switch (SelectedValue)
+                {
+                    case "Name or Number":
+                        //ToFilterPokemon();
+                        break;
+                    case "Type of Pokemon":
+                        break;
+                    case "Pokemon's Weakness":
+                        break;
 
-        
-
+                }
+            }
+        }
     }
 }
