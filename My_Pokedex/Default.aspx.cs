@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Web.DynamicData;
 using System.Net;
 using Microsoft.Ajax.Utilities;
+using System.Xml.Linq;
 
 
 
@@ -46,14 +47,14 @@ namespace My_Pokedex
 
         }
 
-        private void ToAssignPicture(List<Pokemon>AuxPokemonList)
+        private void ToAssignPicture(List<Pokemon> AuxPokemonList)
         {
             string DefaultImage = "https://imgs.search.brave.com/k8au3W5lzEHwHuZTUDauZnE0D5rjuEP2KE8Qbh1lOio/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4w/Lmljb25maW5kZXIu/Y29tL2RhdGEvaWNv/bnMvaW50ZXJhY3Rp/b24tNS83MC9waWN0/dXJlX19nYWxsZXJ5/X19pbWFnZV9fZXJy/b3JfX3dhcm5pbmct/MTI4LnBuZw";
             foreach (Pokemon Aux in AuxPokemonList)
             {
                 Aux.Url = ToValidateImageUrl(Aux.Url) ? Aux.Url : DefaultImage;
             }
-           
+
         }
         private bool ToValidateImageUrl(string Url)
         {
@@ -70,19 +71,21 @@ namespace My_Pokedex
 
                 using (var Response = (HttpWebResponse)Request.GetResponse())
                 {
-                    HttpStatusCode StatusCode=Response.StatusCode;
+                    HttpStatusCode StatusCode = Response.StatusCode;
                     string TypeOfContent = Response.ContentType.ToLower();
 
-                    if ((StatusCode == HttpStatusCode.OK) && (TypeOfContent.StartsWith("image")) )
+                    if ((StatusCode == HttpStatusCode.OK) && (TypeOfContent.StartsWith("image")))
                     {
                         return true;
                     }
                 }
 
-            } catch (UriFormatException ex)
+            }
+            catch (UriFormatException ex)
             {
-                Session.Add("UriFormatExceptionError",ex.ToString());   
-            }catch(WebException ex) when(ex.Response is HttpWebResponse HttpResponse)
+                Session.Add("UriFormatExceptionError", ex.ToString());
+            }
+            catch (WebException ex) when (ex.Response is HttpWebResponse HttpResponse)
             {
                 switch (HttpResponse.StatusCode)
                 {
@@ -98,7 +101,8 @@ namespace My_Pokedex
 
                 }
                 return false;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Session.Add("NotAnWebExceptionError", ex.ToString());
             }
@@ -109,7 +113,7 @@ namespace My_Pokedex
         }
 
 
-        
+
         protected void BtnViewDetails_Click(object sender, EventArgs e)
         {
             string PokemonId = ((Button)sender).CommandArgument != null ? ((Button)sender).CommandArgument : "";
@@ -122,17 +126,19 @@ namespace My_Pokedex
         }
         private List<Pokemon> ToFilterByTypeOrWeakness()
         {
-            
+
             string FieldToSearch = !string.IsNullOrEmpty(TxtSearchWithoutDB?.Text) ? TxtSearchWithoutDB.Text.Trim() : "";
             string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
+
+            //Acá me tengo que traer de la base de datos los elementos para poder buscarlos todos 
 
             if (!string.IsNullOrEmpty(SelectedValue) && (Session["AllPokemons"] != null))
             {
 
-                if ((!int.TryParse(FieldToSearch, out int Error)) && (string.IsNullOrEmpty(FieldToSearch))  )
+                if ((!int.TryParse(FieldToSearch, out int Error)) && (string.IsNullOrEmpty(FieldToSearch)))
                 {
-                    List<Pokemon> FilteredPokemons= ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.ToLower() == SelectedValue.ToLower()).ToList();    
-                    if((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                    List<Pokemon> FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.ToLower() == SelectedValue.ToLower()).ToList();
+                    if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
                     {
                         return FilteredPokemons;
                     }
@@ -140,15 +146,16 @@ namespace My_Pokedex
                     {
                         return null;
                     }
-                    
-                }else if ((!int.TryParse(FieldToSearch, out int Error2)) && (!string.IsNullOrEmpty(FieldToSearch)))
+
+                }
+                else if ((!int.TryParse(FieldToSearch, out int Error2)) && (!string.IsNullOrEmpty(FieldToSearch)))
                 {
                     List<Pokemon> FilteredPokemons;
                     switch (SelectedValue)
                     {
                         case "type of pokemon":
                             FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.Contains(FieldToSearch.ToLower())).ToList();
-                            if((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                            if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
                             {
                                 return FilteredPokemons;
                             }
@@ -167,9 +174,9 @@ namespace My_Pokedex
                                 return null;
                             }
                         default:
-                            return null;    
+                            return null;
                     }
-                    
+
                 }
                 else
                 {
@@ -181,15 +188,30 @@ namespace My_Pokedex
             {
                 return null;
             }
-
-       
-
-
-
         }
         private void ToFilter()
         {
             string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
+            if (SelectedValue == "Name or Number")
+            {
+                ToFilterByName();
+            }else if(SelectedValue== "Type of Pokemon" || SelectedValue == "Pokemon's Weakness")
+            {
+                List<Pokemon>FilteredList=ToFilterByTypeOrWeakness();
+                if((FilteredList != null) && (FilteredList.Count>0))
+                {
+                    RepPokemonCards.GetDefaultValues();
+                    RepPokemonCards.DataSource = FilteredList;
+                    RepPokemonCards.DataBind();
+                }
+                else
+                {
+                    RepPokemonCards.GetDefaultValues();
+                    RepPokemonCards.DataSource = null;
+                    RepPokemonCards.DataBind();
+                }
+             
+            }
         }
         private void ToFilterByName()
         {
@@ -260,7 +282,7 @@ namespace My_Pokedex
 
         protected void TxtSearchWithoutDB_TextChanged(object sender, EventArgs e)
         {
-            //ToFilterPokemon();
+            ToFilter();
         }
 
         private bool DoesThePokemonContainsTheString(Pokemon Poke, string Field)
@@ -270,39 +292,32 @@ namespace My_Pokedex
             string Weakness = !string.IsNullOrEmpty(Poke.Weakness?.Description) ? Poke.Type.Description.ToLower() : "";
 
 
-            if (Name.Contains(Field.ToLower()) )
-            {
-                return true;
-            }else if (Type.Contains(Field.ToLower()) )
-            {
-                return true;
-            }else if (Weakness.Contains(Field.ToLower()) ) 
+            if (Name.Contains(Field.ToLower()))
             {
                 return true;
             }
+            //else if (Type.Contains(Field.ToLower()))
+            //{
+            //    return true;
+            //}
+            //else if (Weakness.Contains(Field.ToLower()))
+            //{
+            //    return true;
+            //}
 
-            
-            
-            return false ;
+
+
+            return false;
         }
 
         protected void TypeOfSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if((TypeOfSearch!=null) && (!string.IsNullOrEmpty(TypeOfSearch.SelectedValue)))
-            {
-                string SelectedValue= TypeOfSearch.SelectedValue.ToLower();
-                switch (SelectedValue)
-                {
-                    case "Name or Number":
-                        //ToFilterPokemon();
-                        break;
-                    case "Type of Pokemon":
-                        break;
-                    case "Pokemon's Weakness":
-                        break;
+            
+        }
 
-                }
-            }
+        protected void BtnSearch_Click(object sender, EventArgs e)
+        {
+            ToFilter();
         }
     }
 }
