@@ -9,7 +9,7 @@
         
         <div class="col-8">
             <section class="navbar d-flex justify-content-center" role="search">
-                <asp:DropDownList runat="server" ID="TypeOfSearch" OnSelectedIndexChanged="TypeOfSearch_SelectedIndexChanged" AutoPostBack="true" CssClass="dropdown btn btn-light me-2">
+                <asp:DropDownList runat="server" ID="TypeOfSearch" OnSelectedIndexChanged="TypeOfSearch_SelectedIndexChanged" CssClass="dropdown btn btn-light me-2">
                     <asp:ListItem Text="Name or Number"  />
                     <asp:ListItem Text="Type of Pokemon" />
                     <asp:ListItem Text="Pokemon's Weakness" />
@@ -17,6 +17,7 @@
                 <div class="navbar d-flex justify-content-start">   
                     <asp:TextBox runat="server" ID="TxtSearchWithoutDB" OnTextChanged="TxtSearchWithoutDB_TextChanged" CssClass="form-control flex-grow-1 me-2" AutoPostBack="true" />
                 </div>
+                <asp:Button Text="Search" runat="server"  ID="BtnSearch" OnClick="BtnSearch_Click"/>
             </section>
             <section class="row row-cols-1 row-cols-md-3 g-4">
 
