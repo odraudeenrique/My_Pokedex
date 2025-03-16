@@ -128,33 +128,34 @@ namespace My_Pokedex
         {
 
             string FieldToSearch = !string.IsNullOrEmpty(TxtSearchWithoutDB?.Text) ? TxtSearchWithoutDB.Text.Trim() : "";
-            string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
+            string SelectedValue = DdlTypeOfSearch.SelectedValue;
+            string SelectedElement= !string.IsNullOrEmpty(DdlElementsForSearch?.SelectedValue)?  DdlElementsForSearch.SelectedValue.ToLower():null;
 
-            //Acá me tengo que traer de la base de datos los elementos para poder buscarlos todos 
 
-            if (!string.IsNullOrEmpty(SelectedValue) && (Session["AllPokemons"] != null))
+            if (!string.IsNullOrEmpty(SelectedValue) && (!string.IsNullOrEmpty(SelectedElement)) && (Session["AllPokemons"] != null))
             {
 
-                if ((!int.TryParse(FieldToSearch, out int Error)) && (string.IsNullOrEmpty(FieldToSearch)))
-                {
-                    List<Pokemon> FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.ToLower() == SelectedValue.ToLower()).ToList();
-                    if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
-                    {
-                        return FilteredPokemons;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                //if ((!int.TryParse(FieldToSearch, out int Error)) && (string.IsNullOrEmpty(FieldToSearch)))
+                //{
+                //    List<Pokemon> FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.ToLower() == SelectedElement.ToLower()).ToList();
+                //    if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                //    {
+                //        return FilteredPokemons;
+                //    }
+                //    else
+                //    {
+                //        return null;
+                //    }
 
-                }
-                else if ((!int.TryParse(FieldToSearch, out int Error2)) && (!string.IsNullOrEmpty(FieldToSearch)))
+                //} else 
+                
+                if ((!int.TryParse(FieldToSearch, out int Error)) &&( !string.IsNullOrEmpty(SelectedElement)) && (string.IsNullOrEmpty(FieldToSearch)))
                 {
                     List<Pokemon> FilteredPokemons;
                     switch (SelectedValue)
                     {
-                        case "type of pokemon":
-                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Type.Description.Contains(FieldToSearch.ToLower())).ToList();
+                        case "Pokemon's Type":
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => (P.Type.Description.ToLower() == SelectedElement)).ToList();
                             if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
                             {
                                 return FilteredPokemons;
@@ -164,7 +165,37 @@ namespace My_Pokedex
                                 return null;
                             }
                         case "Pokemon's Weakness":
-                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Weakness.Description.Contains(FieldToSearch.ToLower())).ToList();
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => (P.Weakness.Description.ToLower() == SelectedElement)).ToList();
+                            if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                            {
+                                return FilteredPokemons;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        default:
+                            return null;
+                    }
+
+                }
+                else if ((!int.TryParse(FieldToSearch, out int Error2))&& !string.IsNullOrEmpty(SelectedElement) && (!string.IsNullOrEmpty(FieldToSearch)))
+                {
+                    List<Pokemon> FilteredPokemons;
+                    switch (SelectedValue)
+                    {
+                        case "Pokemon's Type":
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => (P.Name.ToLower().Contains(FieldToSearch.ToLower())) && (P.Type.Description.ToLower()==SelectedElement)    ).ToList();
+                            if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
+                            {
+                                return FilteredPokemons;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        case "Pokemon's Weakness":
+                            FilteredPokemons = ((List<Pokemon>)Session["AllPokemons"]).Where(P => P.Name.Contains(FieldToSearch.ToLower()) && (P.Weakness.Description.ToLower() == SelectedElement)).ToList();
                             if ((FilteredPokemons != null) && (FilteredPokemons.Count > 0))
                             {
                                 return FilteredPokemons;
@@ -191,13 +222,17 @@ namespace My_Pokedex
         }
         private void ToFilter()
         {
-            string SelectedValue = TypeOfSearch.SelectedValue.ToLower();
+            string SelectedValue = DdlTypeOfSearch.SelectedValue;
             if (SelectedValue == "Name or Number")
             {
+                //Acá tengo que ver cómo hago cuando el textbox esté vacio que me devuelva a todos los pokemones o me devuelva a los del tipo. Seguramente es si está vacio y está seleccionado
+                //el name or number
                 ToFilterByName();
-            }else if(SelectedValue== "Type of Pokemon" || SelectedValue == "Pokemon's Weakness")
+            }
+            else if(SelectedValue== "Pokemon's Type" || SelectedValue == "Pokemon's Weakness")
             {
                 List<Pokemon>FilteredList=ToFilterByTypeOrWeakness();
+
                 if((FilteredList != null) && (FilteredList.Count>0))
                 {
                     RepPokemonCards.GetDefaultValues();
@@ -211,6 +246,20 @@ namespace My_Pokedex
                     RepPokemonCards.DataBind();
                 }
              
+            }
+        }
+        private List<Element> ToGetElementsToFilter()
+        {
+            ElementBusiness Business = new ElementBusiness();   
+            List<Element>ElementsToFilter= Business!=null? Business.ToList(): null;
+
+            if((ElementsToFilter != null)&& (ElementsToFilter.Count > 0))
+            {
+                return ElementsToFilter;
+            }
+            else
+            {
+                return null;    
             }
         }
         private void ToFilterByName()
@@ -310,12 +359,31 @@ namespace My_Pokedex
             return false;
         }
 
-        protected void TypeOfSearch_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DdlTypeOfSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            string SelectedValue = DdlTypeOfSearch.SelectedValue;
+            if (SelectedValue == "Name or Number")
+            {
+                //Esto hace falta validarlo y colocarle bootstrap para que se vea bien
+                DdlElementsForSearch.Visible = false;
+                
+            }
+            else if (SelectedValue == "Pokemon's Type" || SelectedValue == "Pokemon's Weakness")
+            {
+                DdlElementsForSearch.Visible = true;
+                List<Element> Elements = ToGetElementsToFilter();
+                DdlElementsForSearch.DataSource = (Elements.Count > 0) ? Elements : null;
+                DataBind();
+               
+            }
         }
 
         protected void BtnSearch_Click(object sender, EventArgs e)
+        {
+            ToFilter();
+        }
+
+        protected void DdlElementsForSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
             ToFilter();
         }

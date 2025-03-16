@@ -15,13 +15,22 @@ namespace My_Pokedex
     {
 
         /// <summary>
-        /// Control TypeOfSearch.
+        /// Control DdlTypeOfSearch.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList TypeOfSearch;
+        protected global::System.Web.UI.WebControls.DropDownList DdlTypeOfSearch;
+
+        /// <summary>
+        /// Control DdlElementsForSearch.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DdlElementsForSearch;
 
         /// <summary>
         /// Control TxtSearchWithoutDB.
