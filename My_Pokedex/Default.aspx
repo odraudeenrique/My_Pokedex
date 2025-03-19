@@ -20,7 +20,7 @@
                 <div class="navbar d-flex justify-content-start">
                     <asp:TextBox runat="server" ID="TxtSearchWithoutDB" OnTextChanged="TxtSearchWithoutDB_TextChanged" CssClass="form-control flex-grow-1 me-2" AutoPostBack="true" />
                 </div>
-                <asp:Button Text="Search" runat="server" ID="BtnSearch" OnClick="BtnSearch_Click" />
+                <asp:Button Text="Search" runat="server" ID="BtnSearch" OnClick="BtnSearch_Click" CssClass="btn btn-primary" />
                 
             
             </section>

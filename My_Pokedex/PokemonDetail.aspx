@@ -75,8 +75,8 @@
             </section>
 
             <section class="d-flex justify-content-center border-primar">
-                <asp:Button ID="BtnUpdate" Text="Update Info" runat="server" CssClass="btn btn-primary" OnClick="BtnUpdate_Click" />
-                <asp:Button ID="BtnDelete" Text="Delete Pokemon" runat="server" CssClass="btn btn-secondary" OnClick="BtnDelete_Click" />
+                <asp:Button ID="BtnUpdate" Text="Update Info" runat="server" CssClass="btn btn-secondary m-2" OnClick="BtnUpdate_Click" />
+                <asp:Button ID="BtnDelete" Text="Delete Pokemon" runat="server" CssClass="btn btn-danger m-2" OnClick="BtnDelete_Click" />
             </section>
 
         </div>
