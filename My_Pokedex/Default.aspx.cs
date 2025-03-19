@@ -361,11 +361,24 @@ namespace My_Pokedex
 
         protected void DdlTypeOfSearch_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Debería cambiar el boton del filtro para restaurar 
             string SelectedValue = DdlTypeOfSearch.SelectedValue;
             if (SelectedValue == "Name or Number")
             {
                 //Esto hace falta validarlo y colocarle bootstrap para que se vea bien
                 DdlElementsForSearch.Visible = false;
+                string TextForSearch=TxtSearchWithoutDB.Text;
+
+                if (TextForSearch == "")
+                {
+                    RepPokemonCards.GetDefaultValues();
+                    RepPokemonCards.DataSource = Session["AllPokemons"];
+                    RepPokemonCards.DataBind();
+                }
+                else
+                {
+                    ToFilter();
+                }
                 
             }
             else if (SelectedValue == "Pokemon's Type" || SelectedValue == "Pokemon's Weakness")
@@ -374,6 +387,8 @@ namespace My_Pokedex
                 List<Element> Elements = ToGetElementsToFilter();
                 DdlElementsForSearch.DataSource = (Elements.Count > 0) ? Elements : null;
                 DataBind();
+
+                ToFilter();
                
             }
         }
